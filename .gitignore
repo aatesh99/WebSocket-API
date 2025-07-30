@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS / Editor
+.DS_Store
+.env
+
+# VS Code settings (optional)
+.vscode/
+
+# Optional: If you're using Mac/Linux
+*.swp
