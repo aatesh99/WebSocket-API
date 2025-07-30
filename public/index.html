@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebSocket Chat</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 4px 0; }
+    #messages { margin-top: 20px; border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll; }
+  </style>
+</head>
+<body>
+  <h2>🧑‍💻 WebSocket Chat</h2>
+  <input id="messageInput" placeholder="Type a message..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <div id="messages">
+    <ul id="messageList"></ul>
+  </div>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:3000');
+    const messageList = document.getElementById('messageList');
+
+    socket.onopen = () => {
+      console.log('✅ Connected to WebSocket server');
+    };
+
+    socket.onmessage = (event) => {
+      const li = document.createElement('li');
+      li.textContent = event.data;
+      messageList.appendChild(li);
+      messageList.scrollTop = messageList.scrollHeight;
+    };
+
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      if (input.value.trim()) {
+        socket.send(input.value.trim());
+        input.value = '';
+      }
+    }
+  </script>
+</body>
+</html>
