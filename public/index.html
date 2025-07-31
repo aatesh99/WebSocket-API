@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WebSocket Chat</title>
+  <title>WebSocket Echo Chat</title>
   <style>
     body { font-family: sans-serif; padding: 20px; }
     ul { list-style: none; padding: 0; }
     li { padding: 4px 0; }
     #messages { margin-top: 20px; border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll; }
+    input, button { padding: 8px; font-size: 16px; }
   </style>
 </head>
 <body>
-  <h2>🧑‍💻 WebSocket Chat</h2>
+  <h2>🔁 WebSocket Echo Chat</h2>
   <input id="messageInput" placeholder="Type a message..." />
   <button onclick="sendMessage()">Send</button>
 
@@ -28,15 +29,23 @@
 
     socket.onmessage = (event) => {
       const li = document.createElement('li');
-      li.textContent = event.data;
+      li.textContent = `🔁 Server: ${event.data}`;
       messageList.appendChild(li);
       messageList.scrollTop = messageList.scrollHeight;
     };
 
     function sendMessage() {
       const input = document.getElementById('messageInput');
-      if (input.value.trim()) {
-        socket.send(input.value.trim());
+      const msg = input.value.trim();
+      if (msg) {
+        socket.send(msg);
+
+        // Show the user's message too
+        const li = document.createElement('li');
+        li.textContent = `🧑 You: ${msg}`;
+        messageList.appendChild(li);
+        messageList.scrollTop = messageList.scrollHeight;
+
         input.value = '';
       }
     }
